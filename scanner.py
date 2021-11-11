@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import socket #library to use
+import socket #library to use https://docs.python.org/3/library/socket.html
 from ports import ports_and_services
 
 def getOpenPorts(target, portRange=None):
