@@ -19,8 +19,7 @@ def getOpenPorts(target, portRange=None,verbose=False):
         portRange = ports_and_services.keys()
     else:
         portRange = range(portRange[0],portRange[1] + 1)
-    
-    openPorts = []
+
     try:
         ips = socket.gethostbyname_ex(target)[2]
         host = ips[0]
@@ -28,6 +27,7 @@ def getOpenPorts(target, portRange=None,verbose=False):
         if set(ips) > 1:
             print(f"scanning {target} ({host}),\nother addresses: {ips}")
         """
+        openPorts = []
         for port in portRange:
             sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
             sock.settimeout(0.5)
@@ -38,6 +38,7 @@ def getOpenPorts(target, portRange=None,verbose=False):
                     openPorts.append(port)
             sock.close()
     except socket.gaierror:
+        return None
         pass
         #print(f"failed to resolve: {target}")
 
