@@ -12,21 +12,20 @@ def validate(url):
         return False
 
 def getOpenPorts(target, portRange=None,verbose=False):
+    # validate url
     if not validate(target):
         return None
-
+    
+    #handle possible ip port ranges
     if portRange is None or len(portRange) == 0:
         portRange = ports_and_services.keys()
     else:
         portRange = range(portRange[0],portRange[1] + 1)
 
     try:
+        #find the appropiate ip for the given url
         ips = socket.gethostbyname_ex(target)[2]
         host = ips[0]
-        """
-        if set(ips) > 1:
-            print(f"scanning {target} ({host}),\nother addresses: {ips}")
-        """
         openPorts = []
         for port in portRange:
             sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -38,8 +37,11 @@ def getOpenPorts(target, portRange=None,verbose=False):
                     openPorts.append(port)
             sock.close()
     except socket.gaierror:
+        """
+        this exception is raised when 
+        the domain has no ip associated
+        with it
+        """
         return None
-        pass
-        #print(f"failed to resolve: {target}")
-
+  
     return openPorts
